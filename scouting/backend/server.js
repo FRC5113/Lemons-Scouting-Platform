@@ -4,7 +4,7 @@ const path = require('path');
 
 const server = http.createServer((req, res) => {
   if (req.url === '/' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, 'scouting.html'), (err, content) => {
+    fs.readFile(path.join(__dirname, '../frontend/scouting.html'), (err, content) => {
       if (err) {
         res.writeHead(500);
         res.end('Error loading page');
@@ -14,7 +14,7 @@ const server = http.createServer((req, res) => {
       }
     });
   } else if (req.url === '/script.js' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, 'script.js'), (err, content) => {
+    fs.readFile(path.join(__dirname, '../frontend/script.js'), (err, content) => {
       if (err) {
         res.writeHead(500);
         res.end('Error loading script');
