@@ -23,12 +23,33 @@ const server = http.createServer((req, res) => {
         res.end(content);
       }
     });
+  } else if (req.url === '/submit' && req.method === 'POST') {
+    let body = '';
+
+    req.on('data', chunk => {
+      body += chunk.toString(); // Convert Buffer to string
+      fs.appendFile('database.txt', body, err => {
+        if (err) {
+          console.error(err);
+        } else {
+          console.log('file written sucesfully')
+          // file written successfully
+        }
+      });
+    });
+
+    req.on('end', () => {
+      console.log('Received data:', body);
+      res.writeHead(200, { 'Content-Type': 'text/plain' });
+      res.end('Data received successfully!');
+    });
   } else {
     res.writeHead(404);
     res.end('Not Found');
   }
 });
 
-server.listen(3000, '192.168.1.162', () => {
-  console.log('Server running at http://192.168.1.162:3000/');
+const ip = 'localhost';
+server.listen(3000, ip, () => {
+  console.log('Server running at http://localhost:3000/');
 });

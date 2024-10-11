@@ -1,0 +1,1 @@
+{"scoutNumber":"1","testNumber":"2","teamName":"123","teamNumber":"123","robotLength":"132","robotWidth":"123","robotWeight":"132","driveTrain":"123","wheelType":"123","scoring":"123","zonesCrossed":"123","startingLocation":"123","pathing":"123","scoringAction":"123","fouls":"123","reliability":"132","misc":"123"}
