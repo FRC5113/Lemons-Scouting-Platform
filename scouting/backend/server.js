@@ -27,16 +27,17 @@ const server = http.createServer((req, res) => {
     let body = '';
 
     req.on('data', chunk => {
+      body += '\n'; // Corrected to use '\n'
       body += chunk.toString(); // Convert Buffer to string
       fs.appendFile('database.txt', body, err => {
         if (err) {
           console.error(err);
         } else {
-          console.log('file written sucesfully')
-          // file written successfully
+          console.log('File written successfully');
         }
       });
     });
+    
 
     req.on('end', () => {
       console.log('Received data:', body);
