@@ -50,7 +50,7 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const ip = 'localhost';
+const ip = '192.168.1.162';
 server.listen(3000, ip, () => {
-  console.log('Server running at http://localhost:3000/');
+  console.log(`Server running at http://${ip}:3000/`);
 });
