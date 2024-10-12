@@ -1,2 +1,0 @@
-{"firstName":"Chase","lastName":"Yalon"}
-{"firstName":"Ella","lastName":"Yalon"}

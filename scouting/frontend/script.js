@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Send data to the server
-        fetch('http://localhost:3000/submit', {
+        fetch('http://192.168.1.162:3000/submit', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

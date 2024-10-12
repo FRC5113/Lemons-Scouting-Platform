@@ -27,16 +27,25 @@ const server = http.createServer((req, res) => {
     let body = '';
 
     req.on('data', chunk => {
-      body += '\n'; // Corrected to use '\n'
       body += chunk.toString(); // Convert Buffer to string
-      fs.appendFile('database.txt', body, err => {
+    });
+    
+    req.on('end', () => {
+      // Append each JSON object followed by a newline
+      const dataToAppend = body.trim() + '\n'; 
+      fs.appendFile('database.txt', dataToAppend, err => {
         if (err) {
           console.error(err);
+          res.writeHead(500, { 'Content-Type': 'text/plain' });
+          res.end('Failed to save data');
         } else {
-          console.log('File written successfully');
+          console.log('Data appended successfully');
+          res.writeHead(200, { 'Content-Type': 'text/plain' });
+          res.end('Data received successfully!');
         }
       });
     });
+    
     
 
     req.on('end', () => {
