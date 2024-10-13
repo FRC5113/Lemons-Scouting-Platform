@@ -44,14 +44,8 @@ const server = http.createServer((req, res) => {
           res.end('Data received successfully!');
         }
       });
-    });
-    
-    
 
-    req.on('end', () => {
       console.log('Received data:', body);
-      res.writeHead(200, { 'Content-Type': 'text/plain' });
-      res.end('Data received successfully!');
     });
   } else {
     res.writeHead(404);
