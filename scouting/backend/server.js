@@ -1,60 +1,62 @@
-const http = require('http');
+const express = require('express');
 const fs = require('fs');
 const path = require('path');
+const cors = require('cors');
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, '../frontend/scouting.html'), (err, content) => {
-      if (err) {
-        res.writeHead(500);
-        res.end('Error loading page');
-      } else {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(content);
-      }
-    });
-  } else if (req.url === '/script.js' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, '../frontend/script.js'), (err, content) => {
-      if (err) {
-        res.writeHead(500);
-        res.end('Error loading script');
-      } else {
-        res.writeHead(200, { 'Content-Type': 'application/javascript' });
-        res.end(content);
-      }
-    });
-  } else if (req.url === '/submit' && req.method === 'POST') {
-    let body = '';
+const app = express();
 
-    req.on('data', chunk => {
-      body += chunk.toString(); // Convert Buffer to string
-    });
-    
-    req.on('end', () => {
-      // Append each JSON object followed by a newline
-      const dataToAppend = body.trim() + '\n'; 
-      fs.appendFile('database.txt', dataToAppend, err => {
-        if (err) {
-          console.error(err);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end('Failed to save data');
-        } else {
-          console.log('Data appended successfully');
-          res.writeHead(200, { 'Content-Type': 'text/plain' });
-          res.end('Data received successfully!');
-        }
-      });
+// Middleware to handle CORS (allowing requests from any origin)
+app.use(cors());
 
-      console.log('Received data:', body);
-    });
-  } else {
-    res.writeHead(404);
-    res.end('Not Found');
-  }
+// Middleware to parse incoming JSON data
+app.use(express.json());
+
+// Serve the main HTML page
+app.get('/', (req, res) => {
+  fs.readFile(path.join(__dirname, '../frontend/scouting.html'), (err, content) => {
+    if (err) {
+      res.status(500).send('Error loading page');
+    } else {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
+    }
+  });
 });
 
+// Serve the JavaScript file
+app.get('/script.js', (req, res) => {
+  fs.readFile(path.join(__dirname, '../frontend/script.js'), (err, content) => {
+    if (err) {
+      res.status(500).send('Error loading script');
+    } else {
+      res.setHeader('Content-Type', 'application/javascript');
+      res.send(content);
+    }
+  });
+});
+
+// Handle POST requests to /submit
+app.post('/submit', (req, res) => {
+  const body = JSON.stringify(req.body);
+
+  // Append each JSON object followed by a newline
+  const dataToAppend = body.trim() + '\n'; 
+
+  fs.appendFile('database.txt', dataToAppend, err => {
+    if (err) {
+      console.error(err);
+      res.status(500).send('Failed to save data');
+    } else {
+      console.log('Data appended successfully:', body);
+      res.status(200).send('Data received successfully!');
+    }
+  });
+});
+
+// Server IP and port configuration
 const ip = '192.168.1.162';
-const port = '3000'
-server.listen(3000, ip, () => {
+const port = 3000;
+
+app.listen(port, ip, () => {
   console.log(`Server running at http://${ip}:${port}/`);
 });
