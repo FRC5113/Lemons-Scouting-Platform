@@ -1,57 +1,46 @@
-const http = require('http');
-const fs = require('fs');
-const path = require('path');
+const fs = require('fs').promises;
+const readline = require('readline').createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
 
-const server = http.createServer((req, res) => {
-  if (req.url === '/' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, '../frontend/scouting.html'), (err, content) => {
-      if (err) {
-        res.writeHead(500);
-        res.end('Error loading page');
-      } else {
-        res.writeHead(200, { 'Content-Type': 'text/html' });
-        res.end(content);
-      }
-    });
-  } else if (req.url === '/script.js' && req.method === 'GET') {
-    fs.readFile(path.join(__dirname, '../frontend/script.js'), (err, content) => {
-      if (err) {
-        res.writeHead(500);
-        res.end('Error loading script');
-      } else {
-        res.writeHead(200, { 'Content-Type': 'application/javascript' });
-        res.end(content);
-      }
-    });
-  } else if (req.url === '/submit' && req.method === 'POST') {
-    let body = '';
+let database;
 
-    req.on('data', chunk => {
-      body += chunk.toString(); // Convert Buffer to string
-    });
+fs.readFile('database.txt', 'utf8')
+    .then(data => {
+        database = data;
 
-    req.on('end', () => {
-      // Append the received data to the database.txt file
-      const dataToAppend = body.trim() + '\n';
-      fs.appendFile('database.txt', dataToAppend, err => {
-        if (err) {
-          console.error(err);
-          res.writeHead(500, { 'Content-Type': 'text/plain' });
-          res.end('Failed to save data');
-        } else {
-          console.log('Data appended successfully');
-          res.writeHead(200, { 'Content-Type': 'text/plain' });
-          res.end('Data received successfully!'); // Send response only once, in this block
+        // Split the database on the newline to handle multiple JSON objects
+        const parsed = database.split('\n').filter(line => line.trim() !== '');
+        const parsedA = [];
+
+        for (let i = 0; i < parsed.length; i++) {
+            try {
+                parsedA.push(JSON.parse(parsed[i]));
+            } catch (error) {
+                console.error("Error parsing JSON:", error);
+            }
         }
-      });
-    });
-  } else {
-    res.writeHead(404);
-    res.end('Not Found');
-  }
-});
 
-const ip = '192.168.1.162';
-server.listen(3000, ip, () => {
-  console.log(`Server running at http://${ip}:3000/`);
-});
+        readline.question('What team would you like to know about: ', team => {
+            let correctTeam = null;
+            for (let i = 0; i < parsedA.length; i++) {
+                if (parsedA[i].teamName === team) {
+                    correctTeam = parsedA[i];
+                    break;
+                }
+            }
+
+            if (correctTeam) {
+                console.log(`Here is the data about team ${team}:`);
+                console.log(correctTeam);
+            } else {
+                console.log(`No data found for team ${team}.`);
+            }
+
+            readline.close();
+        });
+    })
+    .catch(err => {
+        console.error(err);
+    });
