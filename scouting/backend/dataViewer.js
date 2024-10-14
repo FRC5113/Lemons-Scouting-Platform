@@ -6,7 +6,7 @@ const readline = require('readline').createInterface({
 
 let database;
 
-fs.readFile('database.txt', 'utf8')
+fs.readFile('../backend/database.txt', 'utf8')
     .then(data => {
         database = data;
 
