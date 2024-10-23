@@ -1,0 +1,126 @@
+body {
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 20px;
+    background-color: #1a1a1a; /* Darker Background */
+    color: #ecf0f1; /* Light Text */
+    margin: 0; /* Reset margin to avoid conflicts */
+    padding: 0; /* Reset padding to avoid conflicts */
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 30px;
+    background-color: #333333;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    margin-bottom: 20px;
+    font-size: 28px;
+    color: #e74c3c; /* Bright Red */
+}
+
+.form-group {
+    margin-bottom: 15px;
+    text-align: left;
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"] {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc; /* Default border for inputs */
+    border-radius: 5px;
+    box-sizing: border-box;
+    background-color: #ecf0f1;
+    color: #2c3e50;
+    transition: border 0.3s;
+}
+
+input[type="text"]:focus,
+input[type="number"]:focus {
+    border: 2px solid #e74c3c;
+    outline: none;
+}
+
+button {
+    font-size: 20px;
+    padding: 10px 30px;
+    color: #fff;
+    background-color: #c0392b; /* Dark Red */
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+button:hover {
+    background-color: #e74c3c; /* Bright Red */
+    transform: scale(1.05);
+}
+
+button:active {
+    background-color: #a8322e; /* Darker Red */
+    transform: scale(0.95);
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    background-color: #2c2c2c; /* Darker Background */
+}
+
+table, th, td {
+    border: 1px solid #444; /* Darker Border */
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+}
+
+th {
+    background-color: #c0392b; /* Dark Red */
+    color: white;
+    cursor: pointer;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+th:hover {
+    background-color: #e74c3c; /* Bright Red */
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #353535; /* Slightly Lighter Background */
+}
+
+tbody tr:hover {
+    background-color: #444; /* Darker Hover Background */
+}
+
+.average-row {
+    font-weight: bold;
+    background-color: #7f8c8d; /* Grey */
+}
+
+.average-table {
+    margin-top: 40px;
+}
+
+.search-container {
+    text-align: center;
+    margin-bottom: 20px;
+}

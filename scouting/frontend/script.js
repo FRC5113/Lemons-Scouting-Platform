@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', function() {
         };
 
         // Send data to the server
-        fetch('http://192.168.1.162:3001/submit', {  // Updated to match server IP
+        fetch('http://192.168.1.165:3001/submit', {  // Updated to match server IP
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',

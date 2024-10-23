@@ -1,152 +1,193 @@
 <!DOCTYPE html>
-
-<html>
-    <head>
-        <title> Combustible Lemons Scouting Tool</title>
-        <style>
-            body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #333;
-            }
-            div {
-                color: #ffffff;
-            }
-            button {
-                font-size: 25px;
-                margin-top: 20px;
-                color: #333;
-            }
-        </style>
-    </head>
-
-    <body>
-        <div>
-            <label for='scoutNumber'>scoutNumber</label>
-            <br>
-            <input type="number" id="scoutNumber">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='testNumber'>test Number</label>
-            <br>
-            <input type="number" id="testNumber">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='teamNumber'>Team Number</label>
-            <br>
-            <input type="number" id="teamNumber">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='teamName'>Team Name</label>
-            <br>
-            <input type="text" id="teamName">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='robotLength'>Robot Length (cm)</label>
-            <br>
-            <input type="text" id="robotLength">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='robotWidth'>Robot Width (cm)</label>
-            <br>
-            <input type="text" id="robotWidth">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='robotWeight'>Robot Weight (kg's)</label>
-            <br>
-            <input type="text" id="robotWeight">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='drivetrain'>drivetrain style</label>
-            <br>
-            <input type="text" id="drivetrain">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='wheelType'>Wheel type</label>
-            <br>
-            <input type="text" id="wheelType">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='scoring'>Scoring</label>
-            <br>
-            <input type="text" id="scoring">
-            <br>
-        </div> 
-        <br>
-        <div>
-            <label for='zonesCrossed'>Zones Crossed</label>
-            <br>
-            <input type="text" id="zonesCrossed">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='startingLocation'>Starting Location</label>
-            <br>
-            <input type="text" id="startingLocation">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='parthing'>Pathing?? (what is this and the last one)</label>
-            <br>
-            <input type="text" id="pathing">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='scoringAction'>Scoring Actions</label>
-            <br>
-            <input type="text" id="scoringAction">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='fouls'>fouls</label>
-            <br>
-            <input type="text" id="fouls">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='reliablity'>Reliablity</label>
-            <br>
-            <input type="text" id="reliablity">
-            <br>
-        </div>
-        <br>
-        <div>
-            <label for='misc'>misc</label>
-            <br>
-            <input type="text" id="misc">
-            <br>
-        </div>
-        <br>
-        <br>
-        <button id="submit">submit</button>
-        
-        <script src="script.js"></script>
-
-        
-
-    </body>
-
+<html lang="en">
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Combustible Lemons Scouting Tool</title>
+      <style>
+         body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         margin: 20px;
+         background-color: #1a1a1a; /* Darker Background */
+         color: #ecf0f1; /* Light Text */
+         margin: 0; /* Reset margin to avoid conflicts */
+         padding: 0; /* Reset padding to avoid conflicts */
+         }
+         .container {
+         max-width: 600px;
+         margin: 50px auto;
+         padding: 30px;
+         background-color: #333333;
+         border-radius: 10px;
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+         }
+         h1 {
+         margin-bottom: 20px;
+         font-size: 28px;
+         color: #e74c3c; /* Bright Red */
+         }
+         .form-group {
+         margin-bottom: 15px;
+         text-align: left;
+         }
+         label {
+         display: block;
+         margin-bottom: 5px;
+         font-weight: bold;
+         }
+         input[type="text"],
+         input[type="number"] {
+         width: 100%;
+         padding: 10px;
+         border: 1px solid #ccc; /* Default border for inputs */
+         border-radius: 5px;
+         box-sizing: border-box;
+         background-color: #ecf0f1;
+         color: #2c3e50;
+         transition: border 0.3s;
+         }
+         input[type="text"]:focus,
+         input[type="number"]:focus {
+         border: 2px solid #e74c3c;
+         outline: none;
+         }
+         button {
+         font-size: 20px;
+         padding: 10px 30px;
+         color: #fff;
+         background-color: #c0392b; /* Dark Red */
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         transition: background-color 0.3s, transform 0.2s;
+         }
+         button:hover {
+         background-color: #e74c3c; /* Bright Red */
+         transform: scale(1.05);
+         }
+         button:active {
+         background-color: #a8322e; /* Darker Red */
+         transform: scale(0.95);
+         }
+         table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-top: 20px;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         background-color: #2c2c2c; /* Darker Background */
+         }
+         table, th, td {
+         border: 1px solid #444; /* Darker Border */
+         }
+         th, td {
+         padding: 12px;
+         text-align: left;
+         }
+         th {
+         background-color: #c0392b; /* Dark Red */
+         color: white;
+         cursor: pointer;
+         position: sticky;
+         top: 0;
+         z-index: 1;
+         }
+         th:hover {
+         background-color: #e74c3c; /* Bright Red */
+         }
+         tbody tr:nth-child(odd) {
+         background-color: #353535; /* Slightly Lighter Background */
+         }
+         tbody tr:hover {
+         background-color: #444; /* Darker Hover Background */
+         }
+         .average-row {
+         font-weight: bold;
+         background-color: #7f8c8d; /* Grey */
+         }
+         .average-table {
+         margin-top: 40px;
+         }
+         .search-container {
+         text-align: center;
+         margin-bottom: 20px;
+         }
+      </style>
+   </head>
+   <body>
+      <div class="container">
+         <h1>Combustible Lemons Scouting Tool</h1>
+         <div class="form-group">
+            <label for="scoutNumber">Scouter Name</label>
+            <input type="number" id="scoutNumber" required>
+         </div>
+         <div class="form-group">
+            <label for="testNumber">Test Number</label>
+            <input type="number" id="testNumber" required>
+         </div>
+         <div class="form-group">
+            <label for="teamNumber">Team Number</label>
+            <input type="number" id="teamNumber" required>
+         </div>
+         <div class="form-group">
+            <label for="teamName">Team Name</label>
+            <input type="text" id="teamName" required>
+         </div>
+         <div class="form-group">
+            <label for="robotLength">Robot Length (cm)</label>
+            <input type="number" id="robotLength" required>
+         </div>
+         <div class="form-group">
+            <label for="robotWidth">Robot Width (cm)</label>
+            <input type="number" id="robotWidth" required>
+         </div>
+         <div class="form-group">
+            <label for="robotWeight">Robot Weight (kg)</label>
+            <input type="number" id="robotWeight" required>
+         </div>
+         <div class="form-group">
+            <label for="drivetrain">Drivetrain Style</label>
+            <input type="text" id="drivetrain" required>
+         </div>
+         <div class="form-group">
+            <label for="wheelType">Wheel Type</label>
+            <input type="text" id="wheelType" required>
+         </div>
+         <div class="form-group">
+            <label for="scoring">Scoring</label>
+            <input type="text" id="scoring" required>
+         </div>
+         <div class="form-group">
+            <label for="zonesCrossed">Zones Crossed</label>
+            <input type="text" id="zonesCrossed" required>
+         </div>
+         <div class="form-group">
+            <label for="startingLocation">Starting Location</label>
+            <input type="text" id="startingLocation" required>
+         </div>
+         <div class="form-group">
+            <label for="pathing">Pathing</label>
+            <input type="text" id="pathing" required>
+         </div>
+         <div class="form-group">
+            <label for="scoringAction">Scoring Actions</label>
+            <input type="text" id="scoringAction" required>
+         </div>
+         <div class="form-group">
+            <label for="fouls">Fouls</label>
+            <input type="text" id="fouls" required>
+         </div>
+         <div class="form-group">
+            <label for="reliablity">Reliability</label>
+            <input type="text" id="reliablity" required>
+         </div>
+         <div class="form-group">
+            <label for="misc">Misc</label>
+            <input type="text" id="misc" required>
+         </div>
+         <button id="submit">Submit</button>
+         <a href="/dataview"><button>Data View</button></a>
+      </div>
+      <script src="script.js"></script>
+   </body>
 </html>

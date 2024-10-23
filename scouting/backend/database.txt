@@ -1,2 +1,0 @@
-{"scoutNumber":"1","testNumber":"1","teamName":"1","teamNumber":"1","robotLength":"1","robotWidth":"1","robotWeight":"1","driveTrain":"1","wheelType":"1","scoring":"1","zonesCrossed":"1","startingLocation":"1","pathing":"1","scoringAction":"1","fouls":"1","reliability":"1","misc":"1"}
-{"scoutNumber":"3","testNumber":"3","teamName":"3","teamNumber":"3","robotLength":"3","robotWidth":"3","robotWeight":"3","driveTrain":"3","wheelType":"3","scoring":"3","zonesCrossed":"3","startingLocation":"3","pathing":"3","scoringAction":"3","fouls":"3","reliability":"3","misc":"3"}

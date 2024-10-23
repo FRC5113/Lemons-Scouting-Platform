@@ -1,61 +1,282 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Information</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 20px;
-        }
-        .container {
-            max-width: 600px;
-            margin: auto;
-            text-align: center;
-        }
-        button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-    <div class="container">
-        <h1>Search for Team Information</h1>
-        
-        <input type="text" id="teamInput" placeholder="Enter team name">
-        <button onclick="fetchTeamInfo()">Search</button>
-
-        <div id="result"></div>
-    </div>
-
-    <script>
-        // Function to fetch team info from the backend
-        async function fetchTeamInfo() {
-            const teamNumber = document.getElementById('teamNumber').value;
-            const resultDiv = document.getElementById('result');
-
-            if (!teamName) {
-                resultDiv.innerHTML = "Please enter a team name!";
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/team/${teamNumber}`);
-                const data = await response.json();
-
-                if (response.ok) {
-                    resultDiv.innerHTML = `<pre>${JSON.stringify(data, null, 2)}</pre>`;
-                } else {
-                    resultDiv.innerHTML = `<p>${data.error}</p>`;
-                }
-            } catch (error) {
-                console.error('Error fetching team data:', error);
-                resultDiv.innerHTML = "<p>Error fetching data. Please try again later.</p>";
-            }
-        }
-    </script>
-</body>
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Data Viewer</title>
+      <style>
+         body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         margin: 20px;
+         background-color: #1a1a1a; /* Darker Background */
+         color: #ecf0f1; /* Light Text */
+         margin: 0; /* Reset margin to avoid conflicts */
+         padding: 0; /* Reset padding to avoid conflicts */
+         }
+         .container {
+         max-width: 600px;
+         margin: 50px auto;
+         padding: 30px;
+         background-color: #333333;
+         border-radius: 10px;
+         box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+         }
+         h1 {
+         margin-bottom: 20px;
+         font-size: 28px;
+         color: #e74c3c; /* Bright Red */
+         }
+         .form-group {
+         margin-bottom: 15px;
+         text-align: left;
+         }
+         label {
+         display: block;
+         margin-bottom: 5px;
+         font-weight: bold;
+         }
+         input[type="text"],
+         input[type="number"] {
+         width: 100%;
+         padding: 10px;
+         border: 1px solid #ccc; /* Default border for inputs */
+         border-radius: 5px;
+         box-sizing: border-box;
+         background-color: #ecf0f1;
+         color: #2c3e50;
+         transition: border 0.3s;
+         }
+         input[type="text"]:focus,
+         input[type="number"]:focus {
+         border: 2px solid #e74c3c;
+         outline: none;
+         }
+         button {
+         font-size: 20px;
+         padding: 10px 30px;
+         color: #fff;
+         background-color: #c0392b; /* Dark Red */
+         border: none;
+         border-radius: 5px;
+         cursor: pointer;
+         transition: background-color 0.3s, transform 0.2s;
+         }
+         button:hover {
+         background-color: #e74c3c; /* Bright Red */
+         transform: scale(1.05);
+         }
+         button:active {
+         background-color: #a8322e; /* Darker Red */
+         transform: scale(0.95);
+         }
+         table {
+         width: 100%;
+         border-collapse: collapse;
+         margin-top: 20px;
+         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+         background-color: #2c2c2c; /* Darker Background */
+         }
+         table, th, td {
+         border: 1px solid #444; /* Darker Border */
+         }
+         th, td {
+         padding: 12px;
+         text-align: left;
+         }
+         th {
+         background-color: #c0392b; /* Dark Red */
+         color: white;
+         cursor: pointer;
+         position: sticky;
+         top: 0;
+         z-index: 1;
+         }
+         th:hover {
+         background-color: #e74c3c; /* Bright Red */
+         }
+         tbody tr:nth-child(odd) {
+         background-color: #353535; /* Slightly Lighter Background */
+         }
+         tbody tr:hover {
+         background-color: #444; /* Darker Hover Background */
+         }
+         .average-row {
+         font-weight: bold;
+         background-color: #7f8c8d; /* Grey */
+         }
+         .average-table {
+         margin-top: 40px;
+         }
+         .search-container {
+         text-align: center;
+         margin-bottom: 20px;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Data from Database</h1>
+      <div class="search-container">
+         <input type="text" id="team-search" placeholder="Enter Team Number" />
+         <button onclick="searchTeam()">Search</button>
+         <button onclick="resetSearch()">Reset</button>
+      </div>
+      <table id="data-table">
+         <thead>
+            <tr>
+               <th>Scouter Name</th>
+               <th>Test Number</th>
+               <th>Team Name</th>
+               <th onclick="sortTable(3)">Team Number &#8597;</th>
+               <th>Robot Length</th>
+               <th>Robot Width</th>
+               <th>Robot Weight</th>
+               <th>Drive Train</th>
+               <th>Wheel Type</th>
+               <th>Scoring</th>
+               <th>Zones Crossed</th>
+               <th>Starting Location</th>
+               <th>Pathing</th>
+               <th>Scoring Action</th>
+               <th>Fouls</th>
+               <th>Reliability</th>
+               <th>Misc</th>
+            </tr>
+         </thead>
+         <tbody>
+            <!-- Data will be inserted here -->
+         </tbody>
+      </table>
+      <h2>Team Averages</h2>
+      <table class="average-table" id="average-table">
+         <thead>
+            <tr>
+               <th>Team Number</th>
+               <th>Robot Length</th>
+               <th>Robot Width</th>
+               <th>Robot Weight</th>
+               <th>Scoring</th>
+               <th>Zones Crossed</th>
+               <th>Fouls</th>
+               <th>Reliability</th>
+            </tr>
+         </thead>
+         <tbody>
+            <!-- Averages will be inserted here -->
+         </tbody>
+      </table>
+      <script>
+         let allData = []; // Store all data to allow searching
+         
+         async function fetchData() {
+             try {
+                 const response = await fetch('http://192.168.1.47:3001/data'); // Update the URL as needed
+                 allData = await response.json(); // Store the fetched data
+                 populateDataTable(allData);
+                 populateAverageTable(allData);
+             } catch (error) {
+                 console.error('Error fetching data:', error);
+             }
+         }
+         
+         function populateDataTable(data) {
+             const tableBody = document.getElementById('data-table').getElementsByTagName('tbody')[0];
+             tableBody.innerHTML = ''; // Clear existing rows
+         
+             data.forEach(item => {
+                 const row = tableBody.insertRow();
+                 Object.values(item).forEach(value => {
+                     const cell = row.insertCell();
+                     cell.textContent = value;
+                 });
+             });
+         }
+         
+         function populateAverageTable(data) {
+             const averageTableBody = document.getElementById('average-table').getElementsByTagName('tbody')[0];
+             const teamData = {};
+         
+             // Calculate totals for each team
+             data.forEach(item => {
+                 const teamNumber = item['teamNumber'];
+                 if (!teamData[teamNumber]) {
+                     teamData[teamNumber] = { count: 0, totals: {} };
+                 }
+                 teamData[teamNumber].count += 1;
+         
+                 // Sum up the totals for each key
+                 Object.keys(item).forEach(key => {
+                     if (!teamData[teamNumber].totals[key]) {
+                         teamData[teamNumber].totals[key] = 0;
+                     }
+                     teamData[teamNumber].totals[key] += parseFloat(item[key]) || 0;
+                 });
+             });
+         
+             // Clear the average table before populating it
+             averageTableBody.innerHTML = '';
+         
+             // Calculate averages and insert a new row for each team in the average table
+             const sortedTeamNumbers = Object.keys(teamData).sort((a, b) => a - b);
+             sortedTeamNumbers.forEach(teamNumber => {
+                 const teamInfo = teamData[teamNumber];
+                 const avgRow = averageTableBody.insertRow();
+         
+                 avgRow.insertCell().textContent = teamNumber; // Team number
+         
+                 // Calculate and insert average values
+                 avgRow.insertCell().textContent = (teamInfo.totals['robotLength'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['robotWidth'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['robotWeight'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['scoring'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['zonesCrossed'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['fouls'] / teamInfo.count).toFixed(2);
+                 avgRow.insertCell().textContent = (teamInfo.totals['reliability'] / teamInfo.count).toFixed(2);
+             });
+         }
+         
+         function searchTeam() {
+             const searchValue = document.getElementById('team-search').value.trim();
+             const filteredData = allData.filter(item => item['teamNumber'].toString() === searchValue);
+             populateDataTable(filteredData); // Populate the main table with filtered data
+             populateAverageTable(filteredData); // Populate the average table with filtered data
+         }
+         
+         function resetSearch() {
+             document.getElementById('team-search').value = '';
+             populateDataTable(allData); // Reset the main table to show all data
+             populateAverageTable(allData); // Reset the average table to show all data
+         }
+         
+         function sortTable(columnIndex) {
+             const table = document.getElementById("data-table");
+             const tbody = table.getElementsByTagName("tbody")[0];
+             const rows = Array.from(tbody.rows);
+             const isAscending = tbody.dataset.sortOrder === "asc";
+         
+             rows.sort((rowA, rowB) => {
+                 const cellA = rowA.cells[columnIndex].textContent.trim();
+                 const cellB = rowB.cells[columnIndex].textContent.trim();
+         
+                 // Adjust for numeric sorting for team numbers
+                 if (columnIndex === 3) { // Team Number column
+                     return isAscending ? (parseInt(cellA) - parseInt(cellB)) : (parseInt(cellB) - parseInt(cellA));
+                 } else {
+                     return isAscending ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                 }
+             });
+         
+             // Clear existing rows
+             tbody.innerHTML = '';
+             // Append sorted rows
+             rows.forEach(row => tbody.appendChild(row));
+         
+             // Toggle sort order
+             tbody.dataset.sortOrder = isAscending ? "desc" : "asc";
+         }
+         
+         window.onload = fetchData;
+      </script>
+      <a href="/"><button>Go Back</button></a>
+   </body>
 </html>

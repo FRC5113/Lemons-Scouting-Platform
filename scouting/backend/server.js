@@ -5,6 +5,9 @@ const cors = require('cors');
 
 const app = express();
 
+
+
+
 // Middleware to handle CORS (allowing requests from any origin)
 app.use(cors());
 
@@ -22,6 +25,30 @@ app.get('/', (req, res) => {
     }
   });
 });
+
+// Serve the data HTML page
+app.get('/dataview', (req, res) => {
+  fs.readFile(path.join(__dirname, '../frontend/data.html'), (err, content) => {
+    if (err) {
+      res.status(500).send('Error loading page');
+    } else {
+      res.setHeader('Content-Type', 'text/html');
+      res.send(content);
+    }
+  });
+});
+
+app.get('/data', (req, res) => {
+  fs.readFile('database.txt', 'utf8', (err, data) => {
+      if (err) {
+          res.status(500).send('Error reading database file');
+          return;
+      }
+      const jsonData = data.split('\n').filter(line => line.trim() !== '').map(line => JSON.parse(line));
+      res.json(jsonData);
+  });
+});
+
 
 // Serve the JavaScript file
 app.get('/script.js', (req, res) => {
@@ -54,9 +81,11 @@ app.post('/submit', (req, res) => {
 });
 
 // Server IP and port configuration
-const ip =  '192.168.1.162';
+const ip =  '192.168.1.165';
 const port = 3001;
 
 app.listen(port, ip, () => {
   console.log(`Server running at http://${ip}:${port}/`);
 });
+
+
