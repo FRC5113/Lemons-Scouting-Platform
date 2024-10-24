@@ -38,15 +38,20 @@ document.addEventListener('DOMContentLoaded', function() {
             reliability: reliability.value,
             misc: misc.value
         };
-
+        function sanitizeData(data) {
+            // Remove single quotes, semicolons, and parentheses to prevent execution of code like console.log()
+            return data.replace(/[';()]/g, "");
+          }
+          
         // Send data to the server
         fetch('http://192.168.1.165:3001/submit', {  // Updated to match server IP
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data),
+            body: JSON.stringify(sanatizeData(data)),
         })
+        
         .then(response => response.text())
         .then(data => {
             console.log(data);
