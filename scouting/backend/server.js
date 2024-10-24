@@ -5,14 +5,17 @@ const cors = require('cors');
 
 const app = express();
 
-
-
-
 // Middleware to handle CORS (allowing requests from any origin)
 app.use(cors());
 
 // Middleware to parse incoming JSON data
 app.use(express.json());
+
+// Function to sanitize incoming data
+function sanitizeData(data) {
+  // Remove single quotes, semicolons, and parentheses to prevent execution of code like console.log()
+  return data.replace(/[';()]/g, "");
+}
 
 // Serve the main HTML page
 app.get('/', (req, res) => {
@@ -38,17 +41,17 @@ app.get('/dataview', (req, res) => {
   });
 });
 
+// Serve the database data as JSON
 app.get('/data', (req, res) => {
   fs.readFile('database.txt', 'utf8', (err, data) => {
-      if (err) {
-          res.status(500).send('Error reading database file');
-          return;
-      }
-      const jsonData = data.split('\n').filter(line => line.trim() !== '').map(line => JSON.parse(line));
-      res.json(jsonData);
+    if (err) {
+      res.status(500).send('Error reading database file');
+      return;
+    }
+    const jsonData = data.split('\n').filter(line => line.trim() !== '').map(line => JSON.parse(line));
+    res.json(jsonData);
   });
 });
-
 
 // Serve the JavaScript file
 app.get('/script.js', (req, res) => {
@@ -64,9 +67,11 @@ app.get('/script.js', (req, res) => {
 
 // Handle POST requests to /submit
 app.post('/submit', (req, res) => {
-  const body = JSON.stringify(req.body);
+  // Sanitize the body before saving it to the database
+  let body = JSON.stringify(req.body);
+  body = sanitizeData(body);
 
-  // Append each JSON object followed by a newline
+  // Append each sanitized JSON object followed by a newline
   const dataToAppend = body.trim() + '\n'; 
 
   fs.appendFile('database.txt', dataToAppend, err => {
@@ -81,11 +86,9 @@ app.post('/submit', (req, res) => {
 });
 
 // Server IP and port configuration
-const ip =  '192.168.1.165';
+const ip = '192.168.1.165';
 const port = 3001;
 
 app.listen(port, ip, () => {
   console.log(`Server running at http://${ip}:${port}/`);
 });
-
-
